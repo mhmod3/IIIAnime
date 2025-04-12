@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IIIAnime</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-dark: #1e40af;
+      --secondary: #10b981;
+      --secondary-hover: #059669;
+      --text: #000306;
+      --text-light: #6b7280;
+      --bg: #00060c;
+      --card-bg: #ffffff;
+      --border: #e5e7eb;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.3s ease;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    }
+    
+    body { 
+      background: var(--bg); 
+      padding: 20px; 
+      color: var(--text); 
+      min-height: 100vh;
+    }
+    
+    h1 { 
+      text-align: center; 
+      margin-bottom: 20px; 
+      color: var(--primary-dark);
+      font-size: 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .search-bar { 
+      display: flex; 
+      justify-content: center; 
+      gap: 10px; 
+      margin-bottom: 20px; 
+      flex-wrap: wrap;
+      animation: slideUp 0.5s ease;
+    }
+    
+    input[type="text"] { 
+      padding: 12px 15px; 
+      width: 300px; 
+      border-radius: var(--radius-sm); 
+      border: 1px solid var(--border); 
+      font-size: 16px; 
+      
+      transition: var(--transition);
+      box-shadow: 0 2px 4px rgb(255, 255, 255);
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    
+    button { 
+      padding: 12px 24px; 
+      background: var(--primary); 
+      color: white; 
+      border: none; 
+      border-radius: var(--radius-sm); 
+      cursor: pointer; 
+      transition: var(--transition);
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    button:hover { 
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .cards { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+      gap: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .card { 
+      background: var(--card-bg); 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow); 
+      padding: 12px; 
+      cursor: pointer; 
+      transition: var(--transition);
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .card:hover { 
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .card img { 
+      width: 100%; 
+      border-radius: var(--radius-sm); 
+      height: 220px; 
+      object-fit: cover;
+      transition: var(--transition);
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    }
+    
+    .card:hover img {
+      opacity: 0.9;
+    }
+    
+    .card div {
+      margin-top: 10px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .anime-page { 
+      max-width: 800px; 
+      margin: auto; 
+      background: var(--card-bg); 
+      padding: 24px; 
+      border-radius: var(--radius); 
+      box-shadow: var(--shadow);
+      animation: slideUp 0.5s ease;
+    }
+    
+    .anime-poster { 
+      width: 100%; 
+      max-height: 400px; 
+      object-fit: cover; 
+      border-radius: var(--radius); 
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .episodes-buttons { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 10px; 
+      margin-top: 20px;
+    }
+    
+    .episodes-buttons button { 
+      background: #e2e8f0; 
+      color: #1e293b;
+      padding: 8px 16px;
+      min-width: 80px;
+    }
+    
+    .episodes-buttons button.active { 
+      background: var(--primary); 
+      color: white; 
+      font-weight: bold;
+    }
+    
+    .server-choice, .category-choice { 
+      margin-top: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    select { 
+      padding: 10px; 
+      border-radius: var(--radius-sm); 
+      border: 1px solid var(--border); 
+      margin-right: 10px;
+      transition: var(--transition);
+    }
+    
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    
+    .response-box { 
+      margin-top: 15px; 
+      padding: 16px; 
+      background: #e0f2fe; 
+      border-left: 4px solid #0284c7; 
+      border-radius: var(--radius-sm);
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .funny { 
+      font-style: italic; 
+      color: var(--text-light); 
+      margin-top: 10px;
+    }
+    
+    .footer-link { 
+      margin-top: 40px; 
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .footer-link a { 
+      text-decoration: none; 
+      color: white; 
+      background: var(--secondary); 
+      padding: 12px 24px; 
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      transition: var(--transition);
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .footer-link a:hover {
+      background: var(--secondary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .back-button {
+      display: block;
+      margin-bottom: 20px;
+      background: var(--text-light);
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .back-button:hover {
+      background: var(--text);
+      transform: translateY(-2px);
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgb(255, 255, 255);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    
+    .copy-success {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--secondary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow);
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 2s forwards;
+      z-index: 1000;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideIn {
+      from { 
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    @media (max-width: 600px) {
+      .search-bar { 
+        flex-direction: column; 
+        align-items: center; 
+      }
+      
+      input[type="text"] { 
+        width: 100%; 
+      }
+      
+      .cards {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+      
+      .card img {
+        height: 180px;
+      }
+      
+      .anime-page {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>iiiAnime</h1>
+  <div class="search-bar" id="searchSection">
+    <input id="searchInput" type="text" placeholder="ابحث عن اسم الأنمي..." autocomplete="off">
+    <button onclick="searchAnime()">بحث</button>
+  </div>
+  <div id="results" class="cards"></div>
+  <div id="animeDetails"></div>
+
+  <div class="footer-link">
+    <a href="https://t.me/iiiAnime" target="_blank">للحصول على الترجمة</a>
+  </div>
+
+  <script>
+    const api = 'https://aniwatch-api-chi-liard.vercel.app/api/v2/hianime';
+    let selectedEpisodeId = null;
+    let currentEpisodeButton = null;
+    let animeCache = {};
+    let searchCache = {};
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Focus search input on page load
+      document.getElementById('searchInput').focus();
+      
+      // Load cached data if available
+      const cachedData = localStorage.getItem('animeCache');
+      if (cachedData) {
+        animeCache = JSON.parse(cachedData);
+      }
+    });
+
+    // Search on Enter key press
+    document.getElementById('searchInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchAnime();
+    });
+
+    async function searchAnime() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) {
+        showAlert('اكتب اسم الأنمي أولاً، لا تسوي ذكي!');
+        return;
+      }
+      
+      // Check cache first
+      if (searchCache[query]) {
+        displaySearchResults(searchCache[query]);
+        return;
+      }
+      
+      document.getElementById('results').innerHTML = `
+        <div style="width:100%; text-align:center; padding:20px;">
+          <span class="loading"></span> جاري البحث...
+        </div>
+      `;
+      document.getElementById('animeDetails').innerHTML = '';
+      
+      try {
+        const res = await fetch(`${api}/search?q=${encodeURIComponent(query)}&page=1`);
+        const json = await res.json();
+        
+        if (!json.success || !json.data.animes.length) {
+          throw new Error('No results');
+        }
+        
+        // Cache the results
+        searchCache[query] = json.data.animes;
+        displaySearchResults(json.data.animes);
+      } catch (err) {
+        document.getElementById('results').innerHTML = `
+          <div style="width:100%; text-align:center; padding:20px;" class="funny">
+            ما لقينا شيء. النت يمكن نايم؟ أو جرب اسم آخر.
+          </div>
+        `;
+      }
+    }
+
+    function displaySearchResults(animes) {
+      document.getElementById('results').innerHTML = animes.map(anime => `
+        <div class="card" onclick="openAnime('${anime.id}')">
+          <img src="${anime.poster}" alt="${anime.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/160x220?text=No+Image'">
+          <div>${anime.name}</div>
+        </div>
+      `).join('');
+    }
+
+    async function openAnime(id) {
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('searchSection').style.display = 'none';
+      const detailBox = document.getElementById('animeDetails');
+      
+      // Check cache first
+      if (animeCache[id]) {
+        displayAnimeDetails(animeCache[id]);
+        return;
+      }
+      
+      detailBox.innerHTML = `
+        <div style="width:100%; text-align:center; padding:40px 20px;">
+          <span class="loading"></span> جاري التحميل...
+        </div>
+      `;
+
+      try {
+        const [infoRes, epRes] = await Promise.all([
+          fetch(`${api}/anime/${id}`),
+          fetch(`${api}/anime/${id}/episodes`)
+        ]);
+        
+        const infoJson = await infoRes.json();
+        const epJson = await epRes.json();
+        
+        if (!infoJson.success || !epJson.success) {
+          throw new Error('Failed to load anime data');
+        }
+        
+        const animeData = {
+          info: infoJson.data.anime.info,
+          episodes: epJson.data.episodes
+        };
+        
+        // Cache the data
+        animeCache[id] = animeData;
+        localStorage.setItem('animeCache', JSON.stringify(animeCache));
+        
+        displayAnimeDetails(animeData);
+      } catch (err) {
+        detailBox.innerHTML = `
+          <div class="anime-page">
+            <a href="javascript:void(0)" onclick="goBack()" class="back-button">العودة للبحث</a>
+            <div class="funny" style="text-align:center; padding:20px;">
+              تعذر تحميل الأنمي. السيرفر يمكن نايم ؟.<br>
+              <button onclick="openAnime('${id}')" style="margin-top:10px;">إعادة المحاولة</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function displayAnimeDetails(animeData) {
+      const info = animeData.info;
+      const episodes = animeData.episodes;
+      
+      document.getElementById('animeDetails').innerHTML = `
+        <div class="anime-page">
+          <a href="javascript:void(0)" onclick="goBack()" class="back-button">العودة للبحث</a>
+          <img class="anime-poster" src="${info.poster}" alt="${info.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/800x400?text=No+Image'">
+          <h2>${info.name}</h2>
+          <p style="line-height:1.6;">${info.description}</p>
+          <div style="margin-top:15px; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px;">
+            <div><strong>النوع:</strong> ${info.stats.type}</div>
+            <div><strong>التصنيف العمري:</strong> ${info.stats.rating}</div>
+            <div><strong>المدة:</strong> ${info.stats.duration}</div>
+            <div><strong>الحلقات:</strong> ${info.stats.episodes.sub} (Sub), ${info.stats.episodes.dub} (Dub)</div>
+          </div>
+          <div id="episodesContainer" style="margin-top:20px;"></div>
+          <div id="serverSection"></div>
+          <div id="sourceResult" class="response-box"></div>
+        </div>
+      `;
+
+      // Group episodes by season if there are multiple seasons
+      const seasons = {};
+      episodes.forEach(ep => {
+        const season = ep.season || '1';
+        if (!seasons[season]) {
+          seasons[season] = [];
+        }
+        seasons[season].push(ep);
+      });
+
+      let episodesHTML = '';
+      for (const season in seasons) {
+        episodesHTML += `<h3 style="margin-top:20px;">الموسم ${season}</h3>`;
+        episodesHTML += `<div class="episodes-buttons">`;
+        episodesHTML += seasons[season].map(ep => 
+          `<button onclick="selectEpisode(this, '${ep.episodeId}')">الحلقة ${ep.number}</button>`
+        ).join('');
+        episodesHTML += `</div>`;
+      }
+
+      document.getElementById('episodesContainer').innerHTML = episodesHTML;
+    }
+
+    function goBack() {
+      document.getElementById('animeDetails').innerHTML = '';
+      document.getElementById('searchSection').style.display = 'flex';
+      document.getElementById('searchInput').focus();
+    }
+
+    function selectEpisode(button, episodeId) {
+      selectedEpisodeId = episodeId;
+      if (currentEpisodeButton) currentEpisodeButton.classList.remove('active');
+      button.classList.add('active');
+      currentEpisodeButton = button;
+
+      document.getElementById('serverSection').innerHTML = `
+        <div class="server-choice">
+          <strong>اختر السيرفر:</strong>
+          <select id="serverSelect" onchange="showCategoryChoice()">
+            <option value="">-- اختر --</option>
+            <option value="hd-1">HD-1</option>
+            <option value="hd-2">HD-2</option>
+            
+          </select>
+        </div>
+        <div class="category-choice" id="categoryContainer" style="display:none">
+          <strong>اختر النوع:</strong>
+          <select id="categorySelect" onchange="getEpisodeSource()">
+            <option value="">-- اختر --</option>
+            <option value="sub">Sub</option>
+            <option value="dub">Dub (دوبلاج أنجليزي)</option>
+            <option value="raw">Raw</option>
+          </select>
+        </div>
+      `;
+      document.getElementById('sourceResult').innerHTML = '';
+    }
+
+    function showCategoryChoice() {
+      const server = document.getElementById('serverSelect').value;
+      const categoryBox = document.getElementById('categoryContainer');
+      categoryBox.style.display = server ? 'block' : 'none';
+      if (!server) {
+        document.getElementById('sourceResult').innerHTML = '';
+      }
+    }
+
+    async function getEpisodeSource() {
+      const server = document.getElementById('serverSelect').value;
+      const category = document.getElementById('categorySelect').value;
+      const resultBox = document.getElementById('sourceResult');
+
+      if (!server || !category) return;
+
+      resultBox.innerHTML = `
+        <div style="text-align:center;">
+          <span class="loading"></span> يتم التحميل...
+        </div>
+      `;
+      
+      try {
+        const res = await fetch(`${api}/episode/sources?animeEpisodeId=${selectedEpisodeId}&server=${server}&category=${category}`);
+        const json = await res.json();
+        
+        if (!json.success || !json.data.sources) {
+          throw new Error('No sources found');
+        }
+        
+        const source = json.data.sources.find(src => src.url.includes('.m3u8'));
+        if (!source) throw new Error('No HLS source found');
+        
+        resultBox.innerHTML = `
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <button onclick="copyToClipboard('${source.url}')" style="flex:1; min-width:120px;">
+              انسخ الرابط
+            </button>
+            <a href="${source.url}" target="_blank" style="flex:1; min-width:120px; text-decoration:none;">
+              <button style="width:100%; background:var(--secondary);">
+                فتح مباشر
+              </button>
+            </a>
+          </div>
+          <div class='funny'>ملاحظة يمكن تزعلك : الحلقة لا تحتوي على ترجمة (مع ألاسف) اضغط على زر "الحصول على الترجمة" عشان تعرف تفاصيل اكثر</div>
+        `;
+      } catch (err) {
+        resultBox.innerHTML = `
+          <div class="funny">
+            ما لقينا الرابط. يمكن السيرفر زعلان؟<br>
+            <button onclick="getEpisodeSource()" style="margin-top:10px;">إعادة المحاولة</button>
+          </div>
+        `;
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showCopySuccess();
+      }).catch(err => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showCopySuccess();
+      });
+    }
+
+    function showCopySuccess() {
+      const successMsg = document.createElement('div');
+      successMsg.className = 'copy-success';
+      successMsg.textContent = 'تم النسخ بنجاح!';
+      document.body.appendChild(successMsg);
+      
+      setTimeout(() => {
+        successMsg.remove();
+      }, 2500);
+    }
+
+    function showAlert(message) {
+      const alertBox = document.createElement('div');
+      alertBox.className = 'copy-success';
+      alertBox.style.background = '#ef4444';
+      alertBox.textContent = message;
+      document.body.appendChild(alertBox);
+      
+      setTimeout(() => {
+        alertBox.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
