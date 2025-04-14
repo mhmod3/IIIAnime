@@ -277,6 +277,18 @@
       z-index: 1000;
     }
     
+    .quality-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .quality-buttons button {
+      flex: 1;
+      min-width: 100px;
+    }
+    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -333,6 +345,11 @@
       
       .anime-page {
         padding: 16px;
+      }
+      
+      .quality-buttons button {
+        min-width: 80px;
+        padding: 8px 12px;
       }
     }
   </style>
@@ -589,15 +606,25 @@
         const source = json.data.sources.find(src => src.url.includes('.m3u8'));
         if (!source) throw new Error('No HLS source found');
         
+        // Extract base URL
+        const baseUrl = source.url.substring(0, source.url.lastIndexOf('/') + 1);
+        
+        // Create quality URLs
+        const url1080p = `${baseUrl}index-f1-v1-a1.m3u8`;
+        const url720p = `${baseUrl}index-f2-v1-a1.m3u8`;
+        const url480p = `${baseUrl}index-f3-v1-a1.m3u8`;
+        
         resultBox.innerHTML = `
+          <div class="quality-buttons">
+            <button onclick="copyToClipboard('${url1080p}')">1080p FHD</button>
+            <button onclick="copyToClipboard('${url720p}')">720p HD</button>
+            <button onclick="copyToClipboard('${url480p}')">480p SD</button>
+          </div>
           <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <button onclick="copyToClipboard('${source.url}')" style="flex:1; min-width:120px;">
-              انسخ الرابط
+              انسخ الرابط الأساسي (اذا لم تعمل روابط الجودة السابقة)
             </button>
             <a href="${source.url}" target="_blank" style="flex:1; min-width:120px; text-decoration:none;">
-              <button style="width:100%; background:var(--secondary);">
-                فتح مباشر
-              </button>
             </a>
           </div>
           <div class='funny'>ملاحظة يمكن تزعلك : الحلقة لا تحتوي على ترجمة (مع ألاسف) اضغط على زر "الحصول على الترجمة" عشان تعرف تفاصيل اكثر</div>
